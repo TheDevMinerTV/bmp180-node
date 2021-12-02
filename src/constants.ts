@@ -1,0 +1,4 @@
+export const BMP085_CONTROL_REGISTER = 0xf4;
+export const BMP085_SELECT_TEMP = 0x2e;
+export const BMP085_SELECT_PRESSURE = 0x34;
+export const BMP085_CONVERSION_RESULT = 0xf6;
