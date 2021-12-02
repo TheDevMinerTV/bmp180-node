@@ -14,10 +14,11 @@
 	},
 	"main": "dist/index.js",
 	"dependencies": {
-		"i2c": "0.2.5",
+		"i2c-bus": "^5.2.2",
 		"tslib": "^2.3.1"
 	},
 	"devDependencies": {
+		"@types/i2c-bus": "^5.1.0",
 		"@types/node": "^16.11.11",
 		"typescript": "4.5.2"
 	},

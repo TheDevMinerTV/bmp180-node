@@ -1,4 +1,4 @@
-const i2c = require('i2c');
+import { I2CBus, openSync } from 'i2c-bus';
 import { promisify } from 'util';
 import { BMP085_CONTROL_REGISTER, BMP085_CONVERSION_RESULT, BMP085_SELECT_PRESSURE, BMP085_SELECT_TEMP } from './constants';
 import { SensorCalibrationData } from './interfaces';
@@ -7,6 +7,7 @@ import { readPressure, readTemperature, sleep, toS16, toU16 } from './utlities';
 
 interface SensorOptions {
 	address?: number;
+	bus?: number;
 	mode?: number;
 	units?: {
 		temperature?: TemperatureUnit;
@@ -16,34 +17,62 @@ interface SensorOptions {
 
 export class BMP180 {
 	private readonly address: number;
+	private readonly bus: number;
 	private readonly mode: number;
 	private readonly temperatureUnit: TemperatureUnit;
 	private readonly pressureUnit: PressureUnit;
 
 	private calibration?: SensorCalibrationData;
 
-	// FIXME: This is a hack to get around the fact that the i2c module doesn't support TypeScript.
-	private readonly wire: any;
+	private readonly wire: I2CBus;
 
-	private readonly i2cScan: () => Promise<unknown[]>;
-	private readonly i2cReadBytes: (register: number, bytes: number) => Promise<Buffer>;
-	private readonly i2cWriteBytes: (register: number, bytes: number[]) => Promise<void>;
+	private readonly i2cScan: () => Promise<number[]>;
 
 	constructor(options: SensorOptions = {}) {
 		this.address = options.address ?? 0x77;
+		this.bus = options.bus ?? 1;
 		this.mode = options.mode ?? 0;
 		this.temperatureUnit = options.units?.temperature ?? TemperatureUnit.Celsius;
 		this.pressureUnit = options.units?.pressure ?? PressureUnit.Pascal;
 
-		this.wire = new i2c(this.address);
+		this.wire = openSync(this.bus);
 
 		this.i2cScan = promisify(this.wire.scan);
-		this.i2cReadBytes = promisify(this.wire.readBytes);
-		this.i2cWriteBytes = promisify(this.wire.writeBytes);
 	}
 
 	async scan(): Promise<unknown[]> {
 		return this.i2cScan();
+	}
+
+	private async i2cReadBytes(register: number, length: number): Promise<Buffer> {
+		return new Promise((resolve, reject) => {
+			this.wire.readI2cBlock(this.address, register, length, Buffer.alloc(length), (err, bytesRead, buffer) => {
+				if (err) {
+					reject(err);
+					return;
+				}
+
+				if (bytesRead !== length) {
+					reject(new Error(`Expected to read ${length} bytes, but only read ${bytesRead} bytes`));
+					return;
+				}
+
+				resolve(buffer);
+			});
+		});
+	}
+
+	private async i2cWriteByte(register: number, byte: number): Promise<void> {
+		return new Promise((resolve, reject) => {
+			this.wire.writeByte(this.address, register, byte, (err) => {
+				if (err) {
+					reject(err);
+					return;
+				}
+
+				resolve();
+			});
+		});
 	}
 
 	private async calibrate(): Promise<SensorCalibrationData> {
@@ -73,7 +102,7 @@ export class BMP180 {
 		let calibration: SensorCalibrationData = this.calibration ?? (await this.calibrate());
 
 		// Write SELECT_PRESSURE command to control register
-		await this.i2cWriteBytes(BMP085_CONTROL_REGISTER, [BMP085_SELECT_PRESSURE + (calibration.mode << 6)]);
+		await this.i2cWriteByte(BMP085_CONTROL_REGISTER, BMP085_SELECT_PRESSURE + (calibration.mode << 6));
 		await sleep(28);
 
 		// Read uncalibrated pressure.
@@ -82,7 +111,7 @@ export class BMP180 {
 			((uncalibratedPressureData[0] << 16) + (uncalibratedPressureData[1] << 8) + uncalibratedPressureData[2]) >> (8 - calibration.mode);
 
 		// Write SELECT_TEMPERATURE command to control register
-		await this.i2cWriteBytes(BMP085_CONTROL_REGISTER, [BMP085_SELECT_TEMP]);
+		await this.i2cWriteByte(BMP085_CONTROL_REGISTER, BMP085_SELECT_TEMP);
 		await sleep(8);
 
 		// Read uncalibrated temperature.
@@ -98,7 +127,6 @@ export class BMP180 {
 
 // Provide legacy support
 export default BMP180;
-export const BMP085 = BMP180;
 
 export { SensorCalibrationData } from './interfaces';
 export { Mode } from './modes';
