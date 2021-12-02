@@ -21,7 +21,7 @@ With no units specified this library returns temperature in Celsius and pressure
 ```javascript
 const BMP180 = require('node-bmp180');
 
-const sensor = new BMP180({
+const sensor = new BMP180.BMP180({
 	address: 0x77,
 	mode: BMP180.Mode.UltraHighResolution
 });
@@ -37,7 +37,7 @@ const sensor = new BMP180({
 ```javascript
 const BMP180 = require('node-bmp180');
 
-const sensor = new BMP180({
+const sensor = new BMP180.BMP180({
 	address: 0x77,
 	mode: BMP180.Mode.UltraHighResolution,
 	units: {

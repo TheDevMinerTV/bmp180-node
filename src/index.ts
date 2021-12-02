@@ -14,7 +14,7 @@ interface SensorOptions {
 	};
 }
 
-export class BMP085 {
+export class BMP180 {
 	private readonly address: number;
 	private readonly mode: number;
 	private readonly temperatureUnit: TemperatureUnit;
@@ -97,7 +97,8 @@ export class BMP085 {
 }
 
 // Provide legacy support
-export default BMP085;
+export default BMP180;
+export const BMP085 = BMP180;
 
 export { SensorCalibrationData } from './interfaces';
 export { Mode } from './modes';
