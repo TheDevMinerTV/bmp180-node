@@ -27,10 +27,10 @@ const sensor = new BMP180.BMP180({
 });
 
 (async () => {
-	const { pressure, temp } = await sensor.read();
+	const { pressure, temperature } = await sensor.read();
 
 	console.log(`Pressure: ${pressure} Pa`);
-	console.log(`Temperature: ${temp} C`);
+	console.log(`Temperature: ${temperature} C`);
 })();
 ```
 
@@ -47,10 +47,10 @@ const sensor = new BMP180.BMP180({
 });
 
 (async () => {
-	const { pressure, temp } = await sensor.read();
+	const { pressure, temperature } = await sensor.read();
 
 	console.log(`Pressure: ${pressure} inHg`);
-	console.log(`Temperature: ${temp} F`);
+	console.log(`Temperature: ${temperature} F`);
 })();
 ```
 
