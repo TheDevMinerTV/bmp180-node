@@ -22,7 +22,8 @@ export class BMP085 {
 
 	private calibration?: SensorCalibrationData;
 
-	private readonly wire: i2c;
+	// FIXME: This is a hack to get around the fact that the i2c module doesn't support TypeScript.
+	private readonly wire: any;
 
 	private readonly i2cScan: () => Promise<string[]>;
 	private readonly i2cReadBytes: (register: number, bytes: number) => Promise<Buffer>;
