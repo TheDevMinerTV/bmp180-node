@@ -1,6 +1,6 @@
 {
 	"name": "node-bmp180",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "A module to interface with BMP180/BMP085 temperature and pressure sensor from Node.js.",
 	"author": "TheDevMinerTV",
 	"license": "MIT",
