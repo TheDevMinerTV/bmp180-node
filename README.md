@@ -1,17 +1,17 @@
-# BMP180
+# Node-BMP180
 
-Read temperature and pressure from [BMP180](https://www.adafruit.com/product/1603) or [BMP085](https://www.adafruit.com/product/391) using Node.js.
+Read temperature and pressure from [BMP180](https://www.adafruit.com/product/1603) or [BMP085](https://www.adafruit.com/product/391) sensors using Node.js.
 
-[![NPM](https://nodei.co/npm/bmp180.png)](https://npmjs.org/package/bmp180)
+[![NPM](https://nodei.co/npm/node-bmp180.png)](https://npmjs.org/package/node-bmp180)
 
 ## Install
 
 ```
-$ npm install bmp180
+$ npm install node-bmp180
 ```
 
 ```
-$ yarn add bmp180
+$ yarn add node-bmp180
 ```
 
 ## Usage
@@ -19,7 +19,7 @@ $ yarn add bmp180
 With no units specified this library returns temperature in Celsius and pressure in Pascal.
 
 ```javascript
-const BMP180 = require('bmp180');
+const BMP180 = require('node-bmp180');
 
 const sensor = new BMP180({
 	address: 0x77,
@@ -35,7 +35,7 @@ const sensor = new BMP180({
 ```
 
 ```javascript
-const BMP180 = require('bmp180');
+const BMP180 = require('node-bmp180');
 
 const sensor = new BMP180({
 	address: 0x77,
@@ -56,5 +56,5 @@ const sensor = new BMP180({
 
 ## Legacy package
 
--   https://www.npmjs.com/package/bmp180-sensor
--   https://github.com/dbridges/bmp180-sensor
+- https://www.npmjs.com/package/bmp180-sensor
+- https://github.com/dbridges/bmp180-sensor
