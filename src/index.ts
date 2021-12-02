@@ -25,7 +25,7 @@ export class BMP085 {
 	// FIXME: This is a hack to get around the fact that the i2c module doesn't support TypeScript.
 	private readonly wire: any;
 
-	private readonly i2cScan: () => Promise<string[]>;
+	private readonly i2cScan: () => Promise<unknown[]>;
 	private readonly i2cReadBytes: (register: number, bytes: number) => Promise<Buffer>;
 	private readonly i2cWriteBytes: (register: number, bytes: number[]) => Promise<void>;
 
@@ -42,7 +42,7 @@ export class BMP085 {
 		this.i2cWriteBytes = promisify(this.wire.writeBytes);
 	}
 
-	async scan(): Promise<string[]> {
+	async scan(): Promise<unknown[]> {
 		return this.i2cScan();
 	}
 
