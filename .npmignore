@@ -3,7 +3,6 @@
 .npmignore
 .prettierrc.js
 .eslintrc.js
-yarn.lock
 tsconfig.json
 src
 node_modules
