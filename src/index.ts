@@ -98,3 +98,7 @@ export class BMP085 {
 
 // Provide legacy support
 export default BMP085;
+
+export { SensorCalibrationData } from './interfaces';
+export { Mode } from './modes';
+export { PressureUnit, TemperatureUnit, toFahrenheit, toInchesOfMercury } from './units';
