@@ -56,5 +56,5 @@ const sensor = new BMP180.BMP180({
 
 ## Legacy package
 
-- https://www.npmjs.com/package/bmp180-sensor
-- https://github.com/dbridges/bmp180-sensor
+- https://www.npmjs.com/package/bmp085-sensor
+- https://github.com/dbridges/bmp085-sensor
