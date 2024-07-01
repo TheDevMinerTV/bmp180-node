@@ -20,7 +20,7 @@
 	"devDependencies": {
 		"@types/i2c-bus": "^5.1.0",
 		"@types/node": "^16.11.11",
-		"typescript": "5.4.5"
+		"typescript": "5.5.3"
 	},
 	"scripts": {
 		"build": "tsc",
